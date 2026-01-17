@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Dashboard – MissionDex</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background: transparent;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      color: #00ffff;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      color: #00d4ff;
+    }
+    .dashboard-hero {
+      text-align: center;
+      padding: 80px 20px;
+      color: #00ffff;
+    }
+    .dashboard-hero h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .dashboard-stats {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 40px 0;
+    }
+    .stat-card {
+      background-color: rgba(26, 43, 76, 0.8);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      text-align: center;
+      color: #00ffff;
+    }
+    .stat-card h2 {
+      font-size: 2em;
+      margin: 0;
+    }
+    .stat-card p {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+    .dashboard-bookmarks {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(26, 43, 76, 0.8);
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      color: #00ffff;
+    }
+    .dashboard-bookmarks h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .bookmark-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .bookmark-item {
+      background-color: rgba(26, 43, 76, 0.7);
+      padding: 15px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #00ffff;
+    }
+    .bookmark-item a {
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .bookmark-item a:hover {
+      color: #00d4ff;
+    }
+    .status {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .status.active {
+      background-color: #00ff00;
+      color: #0b1e3e;
+    }
+    .status.inactive {
+      background-color: #ff0000;
+      color: #0b1e3e;
+    }
+    .empty-msg {
+      text-align: center;
+      color: #00ffff;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+    .bookmark-btn {
+      background-color: #00ffff;
+      color: #0b1e3e;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .bookmark-btn:hover {
+      background-color: #00d4ff;
+    }
+    .logout-btn {
+      background-color: #ff4f4f;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .logout-btn:hover {
+      background-color: #ff1f1f;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Transparent Navbar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/missions">Missions</a></li>
+      <li><a href="/astronauts">Astronauts</a></li>
+      <li><a href="/agencies">Agencies</a></li>
+      <li><a href="/spacecraft">Spacecraft</a></li>
+      <li><a href="/launchsites">Launch Sites</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Greeting -->
+  <section class="dashboard-hero">
+    <h1>Welcome, {{ session.get('username') }} 👋</h1>
+  </section>
+
+  <!-- Quick Stats -->
+  <section class="dashboard-stats">
+    <div class="stat-card">
+      <h2>{{ stats.total_bookmarks }}</h2>
+      <p>Bookmarked Missions</p>
+    </div>
+  </section>
+
+  <!-- Bookmarked Missions List -->
+  <section class="dashboard-bookmarks">
+    <h2>Your Bookmarked Missions</h2>
+    <div class="bookmark-list">
+      {% if bookmarks %}
+        {% for m in bookmarks %}
+          <div class="bookmark-item">
+            <a href="{{ url_for('mission_detail', mission_id=m.mission_id) }}">
+              {{ m.mission_name }}
+            </a>
+            <span class="status {{ m.status|lower }}">{{ m.status }}</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="empty-msg">No bookmarks yet. Explore missions to add some!</p>
+      {% endif %}
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assign Spacecraft to Mission</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      color: #00ffff;
+      margin: 30px 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>🚀 Assign Spacecraft → Mission</h2>
+  <form method="POST" style="max-width:480px; margin:auto;">
+    <label for="mission_id">Mission:</label>
+    <select name="mission_id" id="mission_id" required>
+      <option value="">-- select mission --</option>
+      {% for m in missions %}
+      <option value="{{ m.mission_id }}">{{ m.mission_name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="spacecraft_id">Spacecraft:</label>
+    <select name="spacecraft_id" id="spacecraft_id" required>
+      <option value="">-- select craft --</option>
+      {% for c in crafts %}
+      <option value="{{ c.spacecraft_id }}">{{ c.name }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">✅ Assign</button>
+  </form>
+  <p style="text-align:center; margin-top:20px;">
+    <a href="/admin">← Back to Admin Panel</a>
+  </p>
+</body>
+</html>

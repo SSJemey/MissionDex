@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ mission.mission_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      color: #00ffff;
+      margin: 30px 0;
+    }
+    p {
+      text-align: center;
+      color: white;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+    a {
+      color: #00ffff;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #00d4ff;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: center;
+    }
+    li {
+      margin: 10px 0;
+    }
+    li a {
+      color: #00ffff;
+      text-decoration: none;
+    }
+    li a:hover {
+      color: #00d4ff;
+    }
+    
+  </style>
+</head>
+<body>
+  <h2>🚀 {{ mission.mission_name }}</h2>
+  <p><strong>Type:</strong> {{ mission.mission_type }}</p>
+  <p><strong>Destination:</strong> {{ mission.destination }}</p>
+  <p><strong>Launch Date:</strong> {{ mission.launch_date }}</p>
+  <p><strong>Status:</strong> {{ mission.status }}</p>
+  <p><strong>Description:</strong> {{ mission.description }}</p>
+
+  <h3>🏢 Participating Agencies</h3>
+  {% if agencies %}
+    <ul>
+      {% for a in agencies %}
+        <li><a href="/agency/{{ a.agency_id }}">{{ a.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No agencies linked.</p>
+  {% endif %}
+
+  <h3>🚀 Spacecraft Used</h3>
+  {% if crafts %}
+    <ul>
+      {% for s in crafts %}
+        <li><a href="/spacecraft/{{ s.spacecraft_id }}">{{ s.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No spacecraft linked.</p>
+  {% endif %}
+
+    <h3 style="margin-top:30px; color:#00ffff;">📦 Payloads on This Mission</h3>
+  {% if payloads %}
+    <ul>
+      {% for p in payloads %}
+        <li>
+          <a href="/payload/{{ p.payload_id }}">{{ p.name }}</a>
+          — {{ p.type }}, {{ p.weight_kg }} kg
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No payloads assigned.</p>
+  {% endif %}
+
+  <h3 style="margin-top:30px; color:#00ffff;">📅 Related Events</h3>
+    {% if events %}
+        <ul>
+            {% for e in events %}
+            <li>
+            <a href="/event/{{ e.event_id }}">{{ e.name }}</a>
+                 — {{ e.category }}, {{ e.date }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+    <p>No events linked to this mission.</p>
+    {% endif %}
+
+
+  <p><a href="/missions">← Back to Missions</a></p>
+</body>
+</html>

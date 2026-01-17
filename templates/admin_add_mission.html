@@ -1,0 +1,29 @@
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <h1>🚀 Add New Mission</h1>
+
+  <form method="POST" action="/admin/add_mission">
+    <input type="text" name="mission_name" placeholder="Mission Name" required>
+    <input type="text" name="mission_type" placeholder="Type (e.g. Lunar, Orbital)" required>
+    <input type="text" name="destination" placeholder="Destination" required>
+    <input type="date" name="launch_date" required>
+    <input type="number" name="duration" placeholder="Duration (days)" required>
+    <select name="status" required>
+      <option value="Planned">Planned</option>
+      <option value="Ongoing">Ongoing</option>
+      <option value="Completed">Completed</option>
+      <option value="Failed">Failed</option>
+    </select>
+    <textarea name="description" placeholder="Mission Description" rows="4" required></textarea>
+    <button type="submit">🚀 Add Mission</button>
+  </form>
+
+  <p style="text-align:center; margin-top:20px;">
+    <a href="/admin">← Back to Admin Panel</a>

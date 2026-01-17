@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Spacecraft</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      color: #00ffff;
+      margin: 30px 0;
+    }
+    p {
+      text-align: center;
+      color: #00ffff;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>➕ Add New Spacecraft</h2>
+  <form method="POST">
+    <input name="name" placeholder="Spacecraft Name" required>
+    <input name="type" placeholder="Type (e.g. Shuttle, Capsule)" required>
+    <input name="manufacturer" placeholder="Manufacturer" required>
+    <input type="date" name="first_flight" placeholder="First Flight Date" required>
+    <input type="number" name="capacity" placeholder="Crew Capacity" required>
+    <button type="submit">✅ Create Spacecraft</button>
+  </form>
+  <p><a href="/spacecraft">← Back to Spacecraft</a></p>
+</body>
+</html>

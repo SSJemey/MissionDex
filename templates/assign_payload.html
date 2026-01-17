@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assign Payload to Mission</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2 style="text-align:center; color:#00ffff; margin:30px 0;">📌 Assign Payload to Mission</h2>
+  <form method="POST" style="max-width:480px; margin:auto;">
+    <label for="mission_id">Mission:</label>
+    <select name="mission_id" id="mission_id" required>
+      <option value="">-- select mission --</option>
+      {% for m in missions %}
+        <option value="{{ m.mission_id }}">{{ m.mission_name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="payload_id">Payload:</label>
+    <select name="payload_id" id="payload_id" required>
+      <option value="">-- select payload --</option>
+      {% for p in payloads %}
+        <option value="{{ p.payload_id }}">{{ p.name }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">✅ Assign</button>
+  </form>
+  <p style="text-align:center; margin-top:20px;"><a href="/admin">← Back to Admin Panel</a></p>
+</body>
+</html>

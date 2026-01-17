@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ payload.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2 style="text-align:center; color:#00ffff; margin:20px 0;">📦 {{ payload.name }}</h2>
+  <p style="text-align:center;">
+    <strong>Type:</strong> {{ payload.type }} |
+    <strong>Weight:</strong> {{ payload.weight_kg }} kg |
+    <strong>Manufacturer:</strong> {{ payload.manufacturer }}
+  </p>
+  <p style="max-width:600px; margin:20px auto;">{{ payload.description }}</p>
+
+  <h3 style="text-align:center; margin-top:30px; color:#00ffff;">Missions Carrying This Payload</h3>
+  <ul style="max-width:600px; margin:10px auto;">
+    {% for m in missions %}
+      <li>
+        <a href="/missions/{{ m.mission_id }}">{{ m.mission_name }}</a>
+         — {{ m.launch_date }} ({{ m.status }})
+      </li>
+    {% endfor %}
+    {% if not missions %}
+      <p style="text-align:center;">Not assigned to any mission.</p>
+    {% endif %}
+  </ul>
+
+  {% if session.get('role') == 'admin' %}
+    <p style="text-align:center; margin-top:20px;">
+      <a href="/admin/assign_payload" class="button">📌 Assign to Mission</a>
+    </p>
+  {% endif %}
+</body>
+</html>

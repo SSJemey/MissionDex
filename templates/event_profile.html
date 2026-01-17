@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ event.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2 style="text-align:center; color:#00ffff; margin:20px 0;">📅 {{ event.name }}</h2>
+  <p style="text-align:center;">
+    <strong>Category:</strong> {{ event.category }} |
+    <strong>Date:</strong> {{ event.date }} |
+    <strong>Location:</strong> {{ event.location }}
+  </p>
+  <p style="max-width:600px; margin:20px auto;">{{ event.description }}</p>
+
+  <h3 style="text-align:center; color:#00ffff; margin-top:30px;">Missions Linked to This Event</h3>
+  <ul style="max-width:600px; margin:10px auto;">
+    {% for m in missions %}
+      <li>
+        <a href="/missions/{{ m.mission_id }}">{{ m.mission_name }}</a>
+         — {{ m.launch_date }} ({{ m.status }})
+      </li>
+    {% endfor %}
+    {% if not missions %}
+      <p style="text-align:center;">No missions linked.</p>
+    {% endif %}
+  </ul>
+
+  {% if session.get('role')=='admin' %}
+    <p style="text-align:center; margin-top:20px;">
+      <a href="/admin/assign_event" class="button">📌 Assign Event</a>
+    </p>
+  {% endif %}
+</body>
+</html>

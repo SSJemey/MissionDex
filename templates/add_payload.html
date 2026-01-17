@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Payload</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2 style="text-align:center; color:#00ffff; margin:30px 0;">➕ Add New Payload</h2>
+  <form method="POST" style="max-width:480px; margin:auto;">
+    <input name="name" placeholder="Payload Name" required>
+    <input name="type" placeholder="Type (e.g. Satellite, Rover)" required>
+    <input name="weight_kg" type="number" step="0.01" placeholder="Weight (kg)" required>
+    <input name="manufacturer" placeholder="Manufacturer" required>
+    <textarea name="description" placeholder="Description" rows="4"></textarea>
+    <button type="submit">✅ Create Payload</button>
+  </form>
+  <p style="text-align:center; margin-top:20px;"><a href="/payloads">← Back to Payloads</a></p>
+</body>
+</html>

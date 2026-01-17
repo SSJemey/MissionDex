@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ craft.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #00ffff;
+      margin: 20px 0;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center; color:#00ffff; margin:20px 0;">
+    🚀 {{ craft.name }}
+  </h2>
+  <p style="text-align:center;">
+    <strong>Type:</strong> {{ craft.type }} |
+    <strong>Manufacturer:</strong> {{ craft.manufacturer }} |
+    <strong>Capacity:</strong> {{ craft.capacity }} crew
+  </p>
+
+  <h3 style="text-align:center; margin-top:30px; color:#00ffff;">
+    Missions Flown
+  </h3>
+  <div class="mission-list">
+    {% for m in missions %}
+    <div class="card">
+      <h3>{{ m.mission_name }}</h3>
+      <p><strong>Launch:</strong> {{ m.launch_date }}</p>
+      <p><strong>Status:</strong> {{ m.status }}</p>
+      <a href="/missions/{{ m.mission_id }}">Details →</a>
+    </div>
+    {% endfor %}
+  </div>
+  <p style="text-align:center;"><a href="/spacecraft">← Back to Spacecraft</a></p>
+
+</body>
+</html>

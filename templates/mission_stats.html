@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mission Statistics Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background: transparent;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      color: #00d4ff;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00ffff;
+      margin-top: 30px;
+    }
+    .stats-block {
+      background-color: #1a2b4c;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,255,255,0.2);
+      max-width: 900px;
+    }
+    .stats-block h3 {
+      margin-bottom: 10px;
+      color: #00ffff;
+      font-size: 1.2em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #00ffff44;
+      text-align: left;
+    }
+    th {
+      background-color: #142c4f;
+      color: #00ffff;
+    }
+    tr:hover {
+      background-color: #112233;
+    }
+    .section-note {
+      font-size: 0.9em;
+      color: #cccccc;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      {% if session.get('role') == 'admin' %}
+        <li><a href="/admin">Admin Panel</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <h2>📊 Mission Statistics Dashboard</h2>
+
+  <div class="stats-block">
+    <h3>1. Average Astronauts per Mission</h3>
+    <p class="section-note">How many astronauts typically participate in each mission</p>
+    <p><strong>{{ avg_astronauts }}</strong> astronauts per mission</p>
+  </div>
+
+  <div class="stats-block">
+    <h3>2. Spacecraft Performance by Success Rate</h3>
+    <table>
+      <tr><th>Spacecraft</th><th>Success Rate (%)</th></tr>
+      {% for s in spacecraft_stats %}
+      <tr><td>{{ s.name }}</td><td>{{ s.success_rate }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>3. Monthly Mission Activity by Agency</h3>
+    <table>
+      <tr><th>Agency</th><th>Month</th><th>Mission Count</th></tr>
+      {% for row in agency_mission_monthly %}
+      <tr>
+        <td>{{ row.agency }}</td>
+        <td>{{ row.month }}</td>
+        <td>{{ row.mission_count }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>4. Astronaut Performance by Mission</h3>
+    <table>
+      <tr><th>Astronaut</th><th>Mission</th><th>Total</th><th>Successful</th></tr>
+      {% for a in astronaut_performance %}
+      <tr>
+        <td>{{ a.full_name }}</td>
+        <td>{{ a.mission_name }}</td>
+        <td>{{ a.total_missions }}</td>
+        <td>{{ a.successful }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>5. Launch Site Popularity</h3>
+    <table>
+      <tr><th>Launch Site</th><th>Mission Count</th></tr>
+      {% for site in launchsite_usage %}
+      <tr><td>{{ site.name }}</td><td>{{ site.launch_count }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>6. Agency Contribution via Payloads</h3>
+    <table>
+      <tr><th>Agency</th><th>Payloads Launched</th></tr>
+      {% for row in payloads_by_agency %}
+      <tr><td>{{ row.agency }}</td><td>{{ row.payloads_launched }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>7. Mission Event Success by Spacecraft</h3>
+    <table>
+      <tr><th>Spacecraft</th><th>Event Success Rate (%)</th></tr>
+      {% for e in event_success_by_spacecraft %}
+      <tr><td>{{ e.name }}</td><td>{{ e.event_success_rate }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>8. Most Active Astronauts (by Duration)</h3>
+    <table>
+      <tr><th>Astronaut</th><th>Total Duration (days)</th></tr>
+      {% for a in active_astronauts_by_duration %}
+      <tr><td>{{ a.full_name }}</td><td>{{ a.total_duration }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>9. Spacecraft–Payload Efficiency</h3>
+    <table>
+      <tr><th>Spacecraft</th><th>Avg Mission Success (%)</th></tr>
+      {% for s in efficiency_by_payload_spacecraft %}
+      <tr><td>{{ s.name }}</td><td>{{ s.success_rate }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="stats-block">
+    <h3>10. Top Astronauts of {{ year }}</h3>
+    <table>
+      <tr><th>Astronaut</th><th>Missions in {{ year }}</th></tr>
+      {% for a in top_astronauts_year %}
+      <tr><td>{{ a.full_name }}</td><td>{{ a.mission_count }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+
+</body>
+</html>

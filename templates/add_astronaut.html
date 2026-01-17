@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+  body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    p {
+      text-align: center;
+      color: #00ffff;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+</style>
+<h2>🧑‍🚀 Add New Astronaut</h2>
+<form method="POST">
+  <input name="full_name" placeholder="Full Name" required>
+  <input name="rank" placeholder="Rank" required>
+  <input name="nationality" placeholder="Nationality" required>
+  <input name="specialty" placeholder="Specialty" required>
+  <input type="number" name="total_flight_hr" placeholder="Total Flight Hours" required>
+  <select name="active_status" required>
+    <option value="1">Active</option>
+    <option value="0">Retired</option>
+  </select>
+  <button type="submit">✅ Add Astronaut</button>
+</form>
+
+{% if session.get('role') == 'admin' %}
+  <p><a href="/admin">← Back to Admin Panel</a></p>
+{% endif %}

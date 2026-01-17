@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Events</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2 style="text-align:center; color:#00ffff; margin:30px 0;">📅 Event Log</h2>
+
+  {% if session.get('role')=='admin' %}
+    <div style="text-align:center; margin-bottom:20px;">
+      <a href="/admin/add_event" class="button">➕ Add Event</a>
+    </div>
+  {% endif %}
+
+  <div class="mission-list">
+    {% for e in events %}
+      <div class="card">
+        <h3>{{ e.name }}</h3>
+        <p><strong>Category:</strong> {{ e.category }}</p>
+        <p><strong>Date:</strong> {{ e.date }}</p>
+        <p><strong>Location:</strong> {{ e.location }}</p>
+        <a href="/event/{{ e.event_id }}">Details →</a>
+      </div>
+    {% endfor %}
+    {% if not events %}
+      <p style="text-align:center;">No events recorded.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

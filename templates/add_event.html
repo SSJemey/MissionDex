@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Event</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2 style="text-align:center; color:#00ffff; margin:30px 0;">➕ Create New Event</h2>
+  <form method="POST" style="max-width:480px; margin:auto;">
+    <input name="name" placeholder="Event Name" required>
+    <input name="category" placeholder="Category (e.g. Launch, Anomaly)" required>
+    <input type="date" name="date" required>
+    <input name="location" placeholder="Location" required>
+    <textarea name="description" placeholder="Description" rows="4"></textarea>
+    <button type="submit">✅ Add Event</button>
+  </form>
+  <p style="text-align:center; margin-top:20px;"><a href="/events">← Back to Events</a></p>
+</body>
+</html>

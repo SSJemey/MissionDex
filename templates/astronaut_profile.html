@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ astronaut.full_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .profile-header {
+      text-align: center;
+      color: #00ffff;
+      margin: 30px 0;
+    }
+    .bio-card {
+      background: #1a2b4c;
+      padding: 20px;
+      margin: 0 auto 30px;
+      max-width: 700px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,255,255,0.2);
+    }
+    .bio-card p {
+      margin: 8px 0;
+    }
+    .stats-block, .missions-table {
+      background: #1a2b4c;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 900px;
+      box-shadow: 0 0 12px rgba(0,255,255,0.2);
+    }
+    .missions-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .missions-table th, .missions-table td {
+      padding: 10px;
+      border-bottom: 1px solid #00ffff44;
+      text-align: left;
+    }
+    .missions-table th {
+      background: #142c4f;
+      color: #00ffff;
+    }
+    .missions-table tr:hover {
+      background: #112233;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 class="profile-header">👩‍🚀 {{ astronaut.full_name }}</h2>
+
+  <!-- Personal Bio -->
+  <div class="bio-card">
+    <p><strong>Rank:</strong> {{ astronaut.rank or '—' }}</p>
+    <p><strong>Nationality:</strong> {{ astronaut.nationality or '—' }}</p>
+    <p><strong>Speciality:</strong> {{ astronaut.speciality or '—' }}</p>
+    <p><strong>Total Flight Hours:</strong> {{ astronaut.total_flight_hr or 0 }} hrs</p>
+    <p><strong>Active Status:</strong>
+      {% if astronaut.active_status %}
+        Active
+      {% else %}
+        Retired/Inactive
+      {% endif %}
+    </p>
+    <p><strong>Joined Platform:</strong>
+      {{ astronaut.created_at.strftime('%Y-%m-%d') }}
+    </p>
+  </div>
+
+  <!-- Performance Stats -->
+  <div class="stats-block">
+    <h3 style="color:#00ffff; margin-bottom:10px;">📈 Career Statistics</h3>
+    <p><strong>Total Missions:</strong> {{ stats.total_missions }}</p>
+    <p><strong>Successful Missions:</strong> {{ stats.successful_missions }}</p>
+    <p><strong>Success Rate:</strong> {{ stats.success_rate }}%</p>
+  </div>
+
+  <!-- Detailed Mission History -->
+  <div class="missions-table">
+    <h3 style="color:#00ffff; margin-bottom:10px;">🚀 Mission History</h3>
+    {% if missions %}
+      <table>
+        <thead>
+          <tr>
+            <th>Mission</th>
+            <th>Launch Date</th>
+            <th>Destination</th>
+            <th>Role</th>
+            <th>Spacecraft</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in missions %}
+          <tr>
+            <td>
+              <a href="/missions/{{ m.mission_id }}">{{ m.mission_name }}</a>
+            </td>
+            <td>{{ m.launch_date }}</td>
+            <td>{{ m.destination }}</td>
+            <td>{{ m.role }}</td>
+            <td>{{ m.spacecraft_list or '—' }}</td>
+            <td>{{ m.status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p style="text-align:center; color:#ccc; margin:20px 0;">
+        No missions assigned yet ❌
+      </p>
+    {% endif %}
+  </div>
+
+  <!-- Admin: Assign More Missions -->
+  {% if session.get('role') == 'admin' %}
+    <div style="text-align:center; margin:30px;">
+      <a href="/admin/assign_crew" class="button">
+        👩‍🚀 Assign New Mission
+      </a>
+    </div>
+  {% endif %}
+
+  <p style="text-align:center; margin-bottom:30px;">
+    <a href="/astronauts" style="color:#00ffff;">← Back to Astronaut Directory</a>
+  </p>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Space Missions Log</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Page-specific styles */
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      padding: 0.5rem 2%;
+      margin: 0;
+      background: transparent;
+    }
+
+    nav ul li a {
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav ul li a:hover {
+      color: #00d4ff;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 30px 0 10px;
+      color: #00ffff;
+    }
+
+    .filter-box {
+      max-width: 900px;
+      margin: 0 auto 30px;
+      padding: 20px;
+      background-color: #1a2b4c;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+    }
+    .filter-box select,
+    .filter-box input {
+      flex: 1 1 180px;
+      min-width: 140px;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .filter-box button {
+      flex: 0 0 120px;
+      padding: 10px;
+      background-color: #00ffff;
+      color: #0b1e3e;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .filter-box button:hover {
+      background-color: #00d4ff;
+    }
+
+    .mission-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .mission-list .card {
+      background-color: #1a2b4c;
+      border-radius: 10px;
+      padding: 20px;
+      width: 280px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .mission-list .card:hover {
+      transform: scale(1.03);
+    }
+    .mission-list .card h3 {
+      margin: 0 0 10px;
+      color: #00ffff;
+      font-size: 1.2em;
+    }
+    .mission-list .card p {
+      margin: 4px 0;
+      flex: 1;
+    }
+    .mission-list .card a {
+      align-self: flex-end;
+      margin-top: 10px;
+      color: #00ffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .mission-list .card a:hover {
+      text-decoration: underline;
+    }
+
+    .bookmark-btn {
+      background-color: #00ffff;
+      color: #0b1e3e;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .bookmark-btn:hover {
+      background-color: #00d4ff;
+    }
+
+    .admin-link {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .admin-link a {
+      background-color: #00ffff;
+      color: #0b1e3e;
+      padding: 10px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .admin-link a:hover {
+      background-color: #00d4ff;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      {% if session.get('user_id') %}
+        <li><a href="/mission_stats">Missions Stats</a></li>
+        <li><a href="/logout">Logout</a></li>
+      {% else %}
+        <li><a href="/login">Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <h2>🚀 Space Missions Log</h2>
+
+  {% if session.get('role') == 'admin' %}
+    <div class="admin-link">
+      <a href="/admin/add_mission">➕ Add New Mission</a>
+    </div>
+  {% endif %}
+
+  <form method="GET" action="/missions" class="filter-box">
+    <select name="type">
+      <option value="">All Types</option>
+      <option value="Lunar">Lunar</option>
+      <option value="Orbital">Orbital</option>
+      <option value="Mars">Mars</option>
+    </select>
+
+    <select name="status">
+      <option value="">All Statuses</option>
+      <option value="Planned">Planned</option>
+      <option value="Ongoing">Ongoing</option>
+      <option value="Completed">Completed</option>
+      <option value="Failed">Failed</option>
+    </select>
+
+    <input type="text" name="destination" placeholder="Destination">
+
+    <input type="date" name="from_date" placeholder="From">
+
+    <input type="date" name="to_date" placeholder="To">
+
+    <button type="submit">🔍 Filter</button>
+  </form>
+
+  <div class="mission-list">
+    {% if missions %}
+      {% for m in missions %}
+        <div class="card">
+          <h3>{{ m.mission_name }}</h3>
+          <p><strong>Type:</strong> {{ m.mission_type }}</p>
+          <p><strong>Destination:</strong> {{ m.destination }}</p>
+          <p><strong>Launch:</strong> {{ m.launch_date }}</p>
+          <p><strong>Status:</strong> {{ m.status }}</p>
+          {% if session.get('user_id') %}
+            <form method="POST" action="/bookmark/{{ m.mission_id }}">
+              <button type="submit">🔖 Bookmark</button>
+            </form>
+          {% else %}
+            <p style="font-size:0.9em; color:#ccc; margin-top:10px;">Login to bookmark</p>
+          {% endif %}
+          <a href="/missions/{{ m.mission_id }}">Details →</a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align:center; margin-top:40px;">No missions found 🚫</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payloads</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('/static/bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      padding: 0.5rem 2%;
+      margin: 0;
+      background: transparent;
+    }
+
+    nav ul li a {
+      color: #00ffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav ul li a:hover {
+      color: #00d4ff;
+    }
+    .admin-link {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .admin-link a {
+      background-color: #00ffff;
+      color: #0b1e3e;
+      padding: 10px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .admin-link a:hover {
+      background-color: #00d4ff;
+    }
+    
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      {% if session.get('role') == 'admin' %}
+        <li><a href="/admin">Admin Panel</a></li>
+      {% endif %}
+    </ul>
+
+  <h2 style="text-align:center; color:#00ffff; margin:30px 0;">📦 Payload Catalog</h2>
+
+  <div class ="admin-link">
+    {% if session.get('role') == 'admin' %}
+      <a href="/admin/add_payload">➕ Add New Payload</a>
+    {% endif %}
+  </div>
+
+  <div class="mission-list">
+    {% for p in payloads %}
+      <div class="card">
+        <h3>{{ p.name }}</h3>
+        <p><strong>Type:</strong> {{ p.type }}</p>
+        <p><strong>Weight:</strong> {{ p.weight_kg }} kg</p>
+        <p><strong>Manufacturer:</strong> {{ p.manufacturer }}</p>
+        <a href="/payload/{{ p.payload_id }}">Details →</a>
+      </div>
+    {% endfor %}
+    {% if not payloads %}
+      <p style="text-align:center;">No payloads available.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
