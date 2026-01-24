@@ -1,17 +1,23 @@
 from flask import Flask, abort, redirect, render_template, request, url_for, session
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+import os
+
+# load environment variables from a .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "ssjemey@0013"
+# use FLASK_SECRET_KEY if set, otherwise fallback to a secure random key for development
+app.secret_key = os.getenv("FLASK_SECRET_KEY") or os.urandom(24)
 
 def connect_db():
     try:
         connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="missiondex"
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASS"),
+            database=os.getenv("DB_NAME")
         )
         print(">>> Database connection successful!")
         return connection
