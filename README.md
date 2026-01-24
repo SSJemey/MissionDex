@@ -11,11 +11,11 @@ MissionDex is a web application for tracking and managing space missions, astron
 - **Analytics:** mission statistics and reports (success rates, top astronauts, launch site usage).
 
 **Used Tech**
-- Frontend: HTML, CSS and Jinja2 templates (templates/ and static/)
-- Backend: Python 3.8+, Flask, Werkzeug
-- Database: MySQL (accessed via `mysql-connector-python`)
-- Environment: `python-dotenv` for loading `.env` variables
-- Optional / Deployment: Docker and `docker-compose`
+- `Frontend`: HTML, CSS and Jinja2 templates (templates/ and static/)
+- `Backend`: Python 3.8+, Flask, Werkzeug
+- `Database`: MySQL (accessed via `mysql-connector-python`)
+- `Environment`: `python-dotenv` for loading `.env` variables
+- `Optional / Deployment`: Docker and `docker-compose`
 
 **Repository layout (key files)**
 - `app.py` - Flask application and routes
@@ -86,10 +86,9 @@ License
 - No license specified for this repository.
 
 Contributions
-- Frontend (HTML/CSS and template work): SSJemey
-- Backend, database schema and Python code: MusannaMohian
+- Frontend (HTML/CSS and template work): `SSJemey`
+- Backend, database schema and Python code: `MusannaMohian`
 
 If you'd like to contribute, please open an issue or submit a pull request describing your changes.
 
 Enjoy exploring and extending MissionDex!
-
